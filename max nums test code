@@ -1,0 +1,65 @@
+#include "pch.h"
+#include "CppUnitTest.h"
+ using namespace std;
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+int maxnum(int *A,int N)
+{
+	int* a = A;
+	int i, j = 0, k = 0, n = N, m = 0, max = 0, now = 0;
+
+	for (i = 1; i <= n; i++)
+	{
+		for (j = 0; j < n + 1 - i; j++)
+		{
+			now = 0;
+			for (k = j, m = 0; m < i; m++, k++)
+			{
+				now = now + a[k];
+			}
+			if (max < now)
+				max = now;
+		}
+	}
+	return max;
+}
+namespace UnitTest1
+{
+	TEST_CLASS(UnitTest1)
+	{
+	public:
+		
+		TEST_METHOD(TestMethod1)
+		{
+			int n = 6;
+			int a[6] = { -2,11,-4,13,-5,-2 };
+			int testnum;
+			testnum = maxnum(a, n);
+			Assert::AreEqual(testnum,20);
+		}
+		TEST_METHOD(TestMethod2)
+		{
+			int n = 6;
+			int a[6] = { -2,-11,-4,-13,-5,-2 };
+			int testnum;
+			testnum = maxnum(a, n);
+			Assert::AreEqual(testnum,0);
+		}
+		TEST_METHOD(TestMethod3)
+		{
+			int n = 6;
+			int a[6] = { 3,6,-5,-3,8,-2};
+			int testnum;
+			testnum = maxnum(a, n);
+			Assert::AreEqual(testnum,9);
+		}
+		TEST_METHOD(TestMethod4)
+		{
+			int n = 4;
+			int a[4] = { 30,-35,40,-45 };
+			int testnum;
+			testnum = maxnum(a, n);
+			Assert::AreEqual(testnum, 40);
+		}
+	};
+}
