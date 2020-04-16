@@ -1,0 +1,575 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<windows.h>
+#include<ctime>
+#include<conio.h>
+
+void gamemenu();     //游?戏·开a始?界?面?菜?单蹋?
+void choosegame();    //选?择?游?戏·模￡式?
+void gameclr();       //清?空?游?戏·数簓组哩?数簓据Y
+void gameplay(int x);        //游?戏·
+void printnum(int n);      //输?出?数簓字?
+void printcube(int x);     //生Θ?成é数簓阵ó
+void randomnum(int x);      //随?机ú产ú生Θ?数簓字?
+void cubemove(int n);      //接ó受酣?操ù作痢?
+void testwheremove(int n); //测a试?哪?个?方?向ò可é移?动ˉ
+void cubeup(int n);        //上?移?操ù作痢?
+void cubedown(int n);      //下?移?操ù作痢?
+void cubeleft(int n);      //左哩?移?操ù作痢?
+void cuberight(int n);     //右?移?操ù作痢?
+void gamewin();       //判D定¨游?戏·胜骸?利?
+void gamelose();      //判D定¨游?戏·失骸?败悒?
+void quitgame();      //退?出?游?戏·
+
+int A[5][5]=
+	{0,0,0,0,0,
+	 0,0,0,0,0,
+	 0,0,0,0,0,
+	 0,0,0,0,0,
+	 0,0,0,0,0
+	};  
+int canmove[4]={0,0,0,0}; //0up;1down;2left;3right;判D断?是?否?可é以?操ù作痢?数簓组哩?表括?示?能ü0表括?示?不?能ü
+int thetime=0;
+int step=0;
+
+
+int main()
+{
+
+	gamemenu();
+}
+
+
+void gamemenu()
+{
+	system("cls");
+	printf("2048\n");
+	printf("开a始?游?戏·\n");
+	printf("退?出?游?戏·\n");
+	int n;
+	scanf("%d",&n);
+	switch(n)
+	{
+	case 1:
+		choosegame();
+		break;
+	case 2:
+		exit(0);
+		break;
+	}
+
+};
+void choosegame()
+{
+	gameclr();
+	system("cls");
+	printf("3*3\n");
+	printf("4*4\n");
+	printf("5*5\n");
+	printf("退?出?游?戏·\n");
+	int n;
+	scanf("%d",&n);
+	n=n+2;
+	gameplay(n);	
+}
+void gameclr()
+{
+	int i,j;
+	for(i=0;i<5;i++)
+	{
+		for(j=0;j<5;j++)
+		{
+			A[i][j]=0;
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		canmove[i]=0;
+	}
+	thetime=0;
+	step=0;
+
+}
+
+
+void gameplay(int x)
+{
+	int n=x;
+	while(1)
+	{
+	randomnum(n);
+	printcube(n);
+	testwheremove(n);
+	gamewin();
+	gamelose(); 
+	cubemove(n);
+	}
+} 
+
+void printnum(int n)
+{
+	switch(n)
+	{
+	case(0):
+		printf("    ");
+		break;
+	case(2):
+		printf("  2 ");
+		break;
+	case(4):
+		printf("  4 ");
+		break;
+	case(8):
+		printf("  8 ");
+		break;
+	case(16):
+		printf(" 16 ");
+		break;
+	case(32):
+		printf(" 32 ");
+		break;
+	case(64):
+		printf(" 64 ");
+		break;
+	case(128):
+		printf(" 128");
+		break;
+	case(256):
+		printf(" 256");
+		break;
+	case(512):
+		printf(" 512");
+		break;
+	case(1024):
+		printf("1024");
+		break;
+	case(2048):
+		printf("2048");
+		break;
+	}
+}
+void printcube(int x)
+{
+	system("cls");
+	int i;
+	int j;
+	for(i=0;i<x;i++)
+	{
+		for(j=0;j<x;j++)
+		{
+			printf("-----");
+		}
+		printf("-\n");
+		for(j=0;j<x;j++)
+		{
+		printf("-");
+		printnum(A[i][j]);
+		if(j==x-1)
+			printf("-\n");
+		}
+	}
+	for(j=0;j<x;j++)
+		{
+			printf("-----");
+		}
+		printf("-\n");
+	
+}
+
+void gamewin()
+{
+	int i,j,r;
+	for(i=0;i<4;i++)
+		for(j=0;j<4;j++)
+		{
+			if(A[i][j]==2048)
+			{
+				printf("恭§喜2游?戏·胜骸?利?!\n");
+				printf("1.返う?回?菜?单蹋n");
+				printf("2.退?出?游?戏·\n");
+				scanf("%d",&r);
+				switch(r)
+				{
+					case(1):
+						gamemenu();
+						break;
+					case(2):
+						exit(0);
+				}
+			}
+		}
+};
+
+void gamelose()
+{
+	int i,r,k=0;
+	for(i=0;i<4;i++)
+	{
+		if(canmove[i]==1)
+			break;
+		if(i==3&&canmove[i]==0)
+			k=1;
+	}
+	if(k==1)
+	{
+		printf("游?戏·结á束?!\n");
+		printf("1.返う?回?菜?单蹋n");
+		printf("2.退?出?游?戏·\n");
+		scanf("%d",&r);
+		switch(r)
+		{
+			case(1):
+			gamemenu();
+			break;
+			case(2):
+			exit(0);
+		}
+	}
+};
+
+void randomnum(int x)
+{
+	int i,j;
+	int a,b,r;
+	srand((int)time(0));
+	r=rand()%2;
+	if(r==0)
+		r=2;
+	else r=4;
+	a=rand()%x;
+	b=rand()%x;
+	for(i=0;i<(x*x);i++)
+	{
+		if(A[a][b]==0)
+			{
+				A[a][b]=r;
+				break;
+			}
+		else
+		{
+			if(b!=x-1)
+			{
+				b++;
+				continue;
+			}
+			else
+			{
+				if(a!=x-1)
+				{
+					a++;
+					b=0;
+					continue;
+				}
+				else
+				{
+					a=0;b=0;
+					continue;
+				}
+			}
+
+		}
+	}
+}
+void testwheremove(int n)//判D断?是?否?可é以?移?动ˉ
+{
+	int x=n;
+	int i,j;
+	for(i=0;i<4;i++)
+	{
+		canmove[i]=0;
+	}
+		for(j=0;j<x;j++)
+		{
+			for(i=0;i<x;i++)
+			{
+				if((A[i][j]!=0&&A[i][j]==A[i][j-1])||(A[i][j]!=0&&A[i][j-1]==0))
+					canmove[0]=1;
+			}
+		}
+		for(j=0;j<x;j++)
+		{
+			for(i=0;i<x-1;i++)
+			{
+				if((A[i][j]!=0&&A[i][j]==A[i][j+1])||(A[i][j]!=0&&A[i][j+1]==0))
+					canmove[1]=1;
+			}
+		}
+		for(i=0;i<x;i++)
+		{
+			for(j=1;j<x;j++)
+			{
+				if((A[i][j]!=0&&A[i][j]==A[i][j-1])||(A[i][j]!=0&&A[i][j-1]==0))
+					canmove[2]=1;
+			}
+		}
+		for(i=0;i<x;i++)
+		{
+			for(j=0;j<x-1;j++)
+			{
+				if((A[i][j]!=0&&A[i][j]==A[i][j-1])||(A[i][j]!=0&&A[i][j+1]==0))
+					canmove[3]=1;
+			}
+		}
+	
+}
+	
+void cubemove(int n)//键ü位?输?入?
+{
+	int x=n;
+	int w=1;
+	char ch;
+	printf("\n");
+	while(w==1)
+	{
+	do
+	{ch=getch();
+	}while(ch!=27&&ch!=72&&ch!=80&&ch!=75&&ch!=77);
+	switch(ch)
+		{
+		case 27:  gamemenu();break;
+		case 72:  if(canmove[0]==0)
+					  continue;
+				  else
+					  cubeup(x);w=0; break;
+		case 80:  if(canmove[1]==0)
+					  continue;
+				  else
+					  cubedown(x);w=0; break;
+		case 75:  if(canmove[2]==0)
+					  continue;
+				  else
+					  cubeleft(x);w=0; break;
+		case 77:  if(canmove[3]==0)
+					  continue;
+				  else
+					  cuberight(x);w=0; break;
+		default:
+		break;
+		}
+	}	
+
+	
+}
+
+
+void cubeup(int n)
+{
+	int B[5]={0,0,0,0,0};
+	int i,j,k,w=0,u=0,v=0;
+	for(j=0;j<n;j++)//单蹋?取?一?行D
+	{
+		w=0;u=0;
+		for(i=0;i<n;i++)
+		{
+			B[u]=A[i][j];
+			if(B[u]!=0)
+			w++;
+			u++;
+		}
+		if(w!=0)//同?数簓相à加ó
+		{
+			for(u=0;u<n-1;u++)
+			{
+				v=0;
+				do
+				{
+					v++;
+				}while(B[u+v]==0);
+					if(B[u]==B[u+v]&&B[u]!=0&&B[u+v]!=0)
+					{
+						B[u]=2*B[u];
+						B[u+v]=0;
+						w--;
+					}
+				}
+			for(u=0;u<n;u++)
+			{
+				if(B[u]==0)
+				{
+					for(i=u+1;i<n;i++)
+					{
+						if(B[i]==0)
+							continue;
+						{
+							B[u]=B[i];
+							B[i]=0;
+						}
+					}
+				}
+			}
+		for(i=0;i<n;i++)//还1原-回?去ǎ?
+		{
+			A[i][j]=B[i];
+		}
+	}
+	}
+
+};
+
+void cubedown(int n)
+{
+	int B[5]={0,0,0,0,0};
+	int i,j,k,w=0,u=0,v=0;
+	for(j=0;j<n;j++)
+	{
+		w=0;u=0;
+		for(i=n-1;i>=0;i--)
+		{
+			B[u]=A[i][j];
+			if(B[u]!=0)
+				w++;
+			u++;
+		}
+		if(w!=0)
+		{
+			for(u=0;u<n-1;u++)
+			{
+				v=0;
+				do
+				{
+					v++;
+				}while(B[u+v]==0);
+					if(B[u]==B[u+v]&&B[u]!=0&&B[u+v]!=0)
+					{
+						B[u]=2*B[u];
+						B[u+v]=0;
+						w--;
+					}
+				}
+			for(u=0;u<n;u++)
+			{
+				if(B[u]==0)
+				{
+					for(i=u+1;i<n;i++)
+					{
+						if(B[i]==0)
+							continue;
+						{
+							B[u]=B[i];
+							B[i]=0;
+						}
+					}
+				}
+			}
+			u=0;
+		for(i=n-1;i>=0;i--)
+		{
+			A[i][j]=B[u];
+			u++;
+		}
+	}
+	}
+
+};
+
+void cubeleft(int n)
+{
+	int B[5]={0,0,0,0,0};
+	int i,j,k,w=0,u=0,v=0;
+	for(i=0;i<n;i++)
+	{
+		w=0;u=0;
+		for(j=0;j<n;j++)
+		{
+			B[u]=A[i][j];
+			if(B[u]!=0)
+				w++;
+			u++;
+		}
+		if(w!=0)
+		{
+			for(u=0;u<n-1;u++)//加ó
+			{
+				v=0;
+				do
+				{
+					v++;
+				}while(B[u+v]==0);
+					if(B[u]==B[u+v]&&B[u]!=0&&B[u+v]!=0)
+					{
+						B[u]=2*B[u];
+						B[u+v]=0;
+						w--;
+					}
+				}
+			for(u=0;u<n;u++)
+			{
+				if(B[u]==0)
+				{
+					for(j=u+1;j<n;j++)
+					{
+						if(B[j]==0)							continue;
+						{
+							B[u]=B[j];
+							B[j]=0;
+						}
+					}
+				}
+			}
+			u=0;
+		for(j=0;j<n;j++)
+		{
+			A[i][j]=B[u];
+			u++;
+		}
+	}
+	}
+
+};
+
+void cuberight(int n)
+{
+	int B[5]={0,0,0,0,0};
+	int i,j,k,w=0,u=0,v=0;
+	for(i=0;i<n;i++)
+	{
+		w=0;u=0;
+		for(j=n-1;j>=0;j--)
+		{
+			B[u]=A[i][j];
+			if(B[u]!=0)
+				w++;
+			u++;
+		}
+		if(w!=0)
+		{
+			for(u=0;u<n-1;u++)
+			{
+				v=0;
+				do
+				{
+					v++;
+				}while(B[u+v]==0);
+					if(B[u]==B[u+v]&&B[u]!=0&&B[u+v]!=0)
+					{
+						B[u]=2*B[u];
+						B[u+v]=0;
+						w--;
+					}
+				}
+			for(u=0;u<n;u++)
+			{
+				if(B[u]==0)
+				{
+					for(j=u+1;j<n;j++)
+					{
+						if(B[j]==0)
+							continue;
+						{
+							B[u]=B[j];
+							B[j]=0;
+						}
+					}
+				}
+			}
+			u=0;
+		for(j=n-1;j>=0;j--)
+		{
+			A[i][j]=B[u];
+			u++;
+		}
+	}
+	}
+
+};
